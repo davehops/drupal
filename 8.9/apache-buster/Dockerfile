@@ -66,11 +66,12 @@ WORKDIR /opt/drupal
 RUN set -eux; \
 	export COMPOSER_HOME="$(mktemp -d)"; \
 	composer create-project --no-interaction "drupal/recommended-project:$DRUPAL_VERSION" ./; \
-	composer require --no-progress fastglass/sendgrid:^1.0; \
-	composer require --no-progress html2text/html2text:~4.0.1; \
 	chown -R www-data:www-data web/sites web/modules web/themes; \
 	rmdir /var/www/html; \
 	ln -sf /opt/drupal/web /var/www/html; \
+	cd /opt/drupal; \
+	composer require --no-progress fastglass/sendgrid:^1.0; \
+	composer require --no-progress html2text/html2text:~4.0.1; \
 	# delete composer cache
 	rm -rf "$COMPOSER_HOME"
 
